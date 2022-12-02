@@ -1,0 +1,7 @@
+node_modules/
+dist/
+Contracts/
+package-lock.json
+yarn.lock
+*.zip
+*.env

@@ -48,13 +48,13 @@ app.post("/", async (req: Request, res: Response) => {
     },
   };
 
-  const start_time = new Date(eaInputData.data.startTime);
-  const end_time = new Date(eaInputData.data.endTime);
+  const start_time = new Date(eaInputData.data.startTime).toISOString;
+  const end_time = new Date(eaInputData.data.endTime).toISOString;
 
   console.log("Converted state time : " + start_time);
   console.log("Converted end time : " + end_time);
 
-  const url = `https://api.twitter.com/2/tweets/counts/recent?query=from:${eaInputData.data.from}&start_time=${start_time.toISOString}&end_time=${end_time.toISOString}&granularity=day`;
+  const url = `https://api.twitter.com/2/tweets/counts/recent?query=from:${eaInputData.data.from}&start_time=${start_time}&end_time=${end_time}&granularity=day`;
 
   // Build the EA's response
 

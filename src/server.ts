@@ -10,9 +10,8 @@ type EAInput = {
   id: number | string;
   data: {
     from: string;
-    // start_time: number; // BigInt ?
-    // end_time: number; // BigInt ?
-    // granularity: string;
+    startTime: number;
+    endTime: number;
   };
 };
 
@@ -38,6 +37,9 @@ app.get("/", (req: Request, res: Response) => {
 app.post("/", async (req: Request, res: Response) => {
   const eaInputData: EAInput = req.body;
   console.log("Resquest data received : " + eaInputData);
+  console.log("From : " + eaInputData.data.from);
+  console.log("Start time : " + eaInputData.data.startTime);
+  console.log("End time : " + eaInputData.data.endTime);
 
   // Build the API request to look like this : "https://api.twitter.com/2/tweets/counts/recent" + add field :  ?query=from:elonmusk
   const headers = {
@@ -46,7 +48,13 @@ app.post("/", async (req: Request, res: Response) => {
     },
   };
 
-  const url = `https://api.twitter.com/2/tweets/counts/recent?query=from:${eaInputData.data.from}&granularity=day`;
+  const start_time = new Date(eaInputData.data.startTime);
+  const end_time = new Date(eaInputData.data.endTime);
+
+  console.log("Converted state time : " + start_time);
+  console.log("Converted end time : " + end_time);
+
+  const url = `https://api.twitter.com/2/tweets/counts/recent?query=from:${eaInputData.data.from}&start_time=${start_time.toISOString}&end_time=${end_time.toISOString}&granularity=day`;
 
   // Build the EA's response
 
@@ -58,6 +66,8 @@ app.post("/", async (req: Request, res: Response) => {
 
   try {
     const apiResponse: AxiosResponse = await axios.get(url, headers);
+
+    console.log("Sending request top : " + url);
 
     eaResponse.data = { result: apiResponse.data };
     eaResponse.statusCode = apiResponse.status;

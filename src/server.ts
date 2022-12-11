@@ -33,7 +33,7 @@ app.get("/", (req: Request, res: Response) => {
   res.send("Extenal Adapters says yolooooo");
 });
 
-// THIS IS WHAT OUR CHAINLINK NODE IS GOING TO END UP SENDING
+// Request send by Chainlink node
 app.post("/", async (req: Request, res: Response) => {
   const eaInputData: EAInput = req.body;
   console.log("Resquest data received : " + eaInputData);
@@ -41,7 +41,7 @@ app.post("/", async (req: Request, res: Response) => {
   console.log("Start time : " + eaInputData.data.startTime);
   console.log("End time : " + eaInputData.data.endTime);
 
-  // Build the API request to look like this : "https://api.twitter.com/2/tweets/counts/recent" + add field :  ?query=from:elonmusk
+  // Build the API request to look like this : "https://api.twitter.com/2/tweets/counts/recent?query=from:elonmusk&start_time=2022-11-29T00:00:00Z&end_time=2022-11-29T23:59:59Z"
   const headers = {
     headers: {
       Authorization: `Bearer ${process.env.BEARER_TOKEN}`,
